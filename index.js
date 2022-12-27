@@ -1,4 +1,5 @@
 const express = require("express");
+const pieRepo = require("./repos/pieRepo");
 const app = express();
 // let pieRepo = require("./repos/pieRepo");
 const port = 2000;
@@ -24,6 +25,28 @@ router.get("/", (req, res, next) => {
       }
     },
     function (err) {
+      next(err);
+    }
+  );
+});
+
+router.get("/search", (req, res, next) => {
+  let searchObj = {
+    id: req.query.id,
+    name: req.query.name,
+  };
+
+  pieRepo.search(
+    searchObj,
+    (data) => {
+      res.status(200).json({
+        status: 200,
+        statusText: "OK",
+        message: "All pie retrieved.",
+        data: data,
+      });
+    },
+    (err) => {
       next(err);
     }
   );
